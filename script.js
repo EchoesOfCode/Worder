@@ -210,7 +210,7 @@ function generateShareMessage() {
     const progress = generateEmojiProgress();
     const attempts = guessHistory.length;
 
-    let shareMessage = ` Worder ${attempts}\n${progress}\nCan you beat my score?`;
+    let shareMessage = ` Worder\n$startWord\n${progress}\n$endWord\nCan you beat my score? https://github.com/EchoesOfCode/Worder`;
     return shareMessage;
 }
 

@@ -6,18 +6,23 @@ let currentGuess = "";
 let guessRow = 0;
 let lastValidWord = startWord;
 let guessHistory = [];  // Store all valid guesses
-
+const wordCache = {};
+let popupTimeout;
 
 
 async function isValidWord(word) {
+    if (wordCache[word] !== undefined) {
+        return wordCache[word];  // Use cached result
+    }
+
     try {
         const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+
         if (response.status === 200) {
-            return true;  // Valid word
-        } else if (response.status === 404) {
-            return false; // Invalid word
+            wordCache[word] = true;
+            return true;
         } else {
-            console.error("Error checking word validity.");
+            wordCache[word] = false;
             return false;
         }
     } catch (error) {
@@ -25,6 +30,7 @@ async function isValidWord(word) {
         return false;
     }
 }
+
 
 function initGame() {
     const startRow = document.getElementById('start-word');
@@ -54,9 +60,17 @@ function createPopup() {
         popup.className = 'popup-message';
         document.body.appendChild(popup);
 }
+
+
 function showPopup(message) {
+
+    
     const currentRow = document.querySelector(`#guess-grid .word-row:nth-child(${guessRow + 1})`);
     const popup = document.getElementById('popup-message');
+
+    clearTimeout(popupTimeout);  // Clear existing timeout
+    popup.classList.remove('show');
+
 
     if (currentRow && popup) {
         popup.textContent = message;
@@ -68,19 +82,19 @@ function showPopup(message) {
         const popupWidth = popup.offsetWidth;
 
         popup.style.position = 'absolute';
-        popup.style.top = `${window.scrollY + rowRect.top - 50}px`;
+        popup.style.top = `${window.scrollY + rowRect.top - 30}px`;
         popup.style.left = `${window.scrollX + rowRect.left + (rowRect.width / 2) - (popupWidth / 2)}px`;
 
         popup.style.visibility = 'visible';
         popup.classList.add('show');
 
-        setTimeout(() => {
+        popupTimeout = setTimeout(() => {
             popup.style.opacity = '0';
             setTimeout(() => {
                 popup.classList.remove('show');
                 popup.style.display = 'none';
                 popup.style.opacity = '1';
-            }, 500);
+            }, 400);
         }, 1000);
     }
 }
@@ -209,8 +223,7 @@ function generateEmojiProgress() {
 function generateShareMessage() {
     const progress = generateEmojiProgress();
     const attempts = guessHistory.length;
-
-    let shareMessage = ` Worder\n$startWord\n${progress}\n$endWord\nCan you beat my score? https://github.com/EchoesOfCode/Worder`;
+    let shareMessage =   `Worder\n\n${startWord}\n${progress}${endWord}\n\nCan you beat my score? https://github.com/EchoesOfCode/Worder`;
     return shareMessage;
 }
 
@@ -250,38 +263,7 @@ function updateCurrentRow() {
         box.textContent = currentGuess[i] || "";
     }
 }
-/*
-async function submitWord() {
-    if (currentGuess.length !== 4) {
-        showPopup("not a 4-letter word");
-        return;
-    }
 
-    const valid = await isValidWord(currentGuess.toLowerCase());
-    if (!valid) {
-        showPopup("not a word");
-        return;
-    }
-
-    if (!isOneLetterDifferent(currentGuess, lastValidWord)) {
-        showPopup("only one letter can be changed");
-        return;
-    }
-
-    highlightCorrectLetters(currentGuess);
-    highlightChangedLetters(currentGuess, lastValidWord);
-
-    if (currentGuess === endWord) {
-        highlightFinalRow();
-        showPopup("Congratulations! You've solved the puzzle!");
-    } else {
-        lastValidWord = currentGuess;
-        guessRow++;
-        currentGuess = "";
-        addNewGuessRow();
-    }
-}
-*/
 function isOneLetterDifferent(word1, word2) {
     let diffCount = 0;
     for (let i = 0; i < 4; i++) {

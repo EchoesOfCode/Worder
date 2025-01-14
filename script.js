@@ -107,7 +107,10 @@ function resetGame() {
     guessHistory = [];  
 
     const guessGrid = document.getElementById('guess-grid');
-    guessGrid.innerHTML = "";
+    if (guessGrid) {
+        guessGrid.innerHTML = "";  // Clear guesses only
+    }
+
 
     const popup = document.getElementById('popup-message');
     if (popup) {
@@ -132,6 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-button');
     resetButton.addEventListener('click', resetGame);
 });
+
+document.getElementById('reset-button').addEventListener('click', (event) => {
+    event.preventDefault();  // Prevent any page reload
+    resetGame();
+});
+
 
 //congratulations PopUp
 

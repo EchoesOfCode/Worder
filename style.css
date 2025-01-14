@@ -14,6 +14,11 @@ body {
     overflow: hidden;
 }
 
+/* Define a global header height for easy scaling */
+:root {
+    --header-height: 100px; /* Adjust this to change header and button size */
+}
+
 .game-container {   
     padding: 0.5em;
     flex :1;
@@ -30,17 +35,20 @@ body {
 .gameHeader{
     align-items: center;
     border-bottom: 1px solid rgb(224, 221, 221);
-    display: flex;
+    display: flex !important;
     flex-direction: row;
-    height: var(--header-height);
+    /*height: var(--header-height, 60px); */
     justify-content: center;
     padding: env(safe-area-inset-top, 10px) 15px;
     position: relative;
     box-sizing: border-box;
-    font-size: clamp(18px, 6vw, 32px); 
-    min-height: 30px; 
+    font-size: clamp(18px, 7vw, 32px); 
+    min-height: 40px; 
     width: 100%;
     overflow: visible;
+    visibility: visible !important;
+    opacity: 1 !important;
+
 }
 
 .gameHeaderTitle{
@@ -52,6 +60,7 @@ body {
     flex-grow: 1;
     margin: 0 auto;
     overflow: hidden;
+    font-size: 1.5em; 
 }
 
 
@@ -240,36 +249,38 @@ h1 {
     border: none;
     padding: 0;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
+    width: calc(var(--header-height) * 0.5); /* 50% of header height */
+    height: calc(var(--header-height) * 0.5); /* Keep it square */
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.4s ease;
+
 }
 
 /* Circular arrow design */
 .reset-icon {
-    width: 30px;
-    height: 30px;
+    width: calc(var(--header-height) * 0.25); /* 50% of header height */
+    height: calc(var(--header-height) * 0.25); /* Keep it square */
     border: 3px solid #333; /* Circle border */
     border-radius: 50%; /* Make it a circle */
     border-top-color: transparent; /* Create the gap */
     position: relative;
     box-sizing: border-box;
-    transition: transform 0.3s ease;
+    
 }
 
 /* Arrowhead */
 .reset-icon::before {
     content: '';
     position: absolute;
-    top: -5px;
-    left: 11px;
+    top: -calc(var(--header-height) * 5);
+    left: calc(var(--header-height) * 0.1);
     width: 0;
     height: 0;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-bottom: 8px solid #333; /* Arrow color */
+    border-bottom: 6px solid #333; /* Arrow color */
     transform: rotate(-45deg);
 }
 

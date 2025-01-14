@@ -274,12 +274,24 @@ function updateCurrentRow() {
 }
 
 function isOneLetterDifferent(word1, word2) {
-    let diffCount = 0;
-    for (let i = 0; i < 4; i++) {
-        if (word1[i] !== word2[i]) diffCount++;
+    if (word1.length !== word2.length) {
+        return false;  // Words must be the same length
     }
-    return diffCount === 1;
+
+    let differenceCount = 0;
+
+    for (let i = 0; i < word1.length; i++) {
+        if (word1[i].toLowerCase() !== word2[i].toLowerCase()) {
+            differenceCount++;
+        }
+        if (differenceCount > 1) {
+            return false;  // More than one difference detected
+        }
+    }
+
+    return differenceCount === 1;  // Must differ by exactly one letter
 }
+
 
 function highlightCorrectLetters(word) {
     for (let i = 0; i < 4; i++) {

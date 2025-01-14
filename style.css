@@ -34,12 +34,13 @@ body {
     flex-direction: row;
     height: var(--header-height);
     justify-content: center;
-    padding: 10px;
+    padding: env(safe-area-inset-top, 10px) 15px;
     position: relative;
     box-sizing: border-box;
     font-size: clamp(18px, 6vw, 32px); 
     min-height: 30px; 
-    
+    width: 100%;
+    overflow: visible;
 }
 
 .gameHeaderTitle{
@@ -49,6 +50,8 @@ body {
     align-items: center;
     text-overflow: ellipsis;
     flex-grow: 1;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 
@@ -298,7 +301,7 @@ h1 {
     padding: 20px 30px;
     border-radius: 10px;
     text-align: center;
-    width: 320px;
+    width: auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
     animation: slideIn 0.3s ease;

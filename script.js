@@ -1,7 +1,7 @@
 /* script.js */
 
-const startWord = "HEAD";
-const endWord = "TAIL";
+const startWord = "COLD";
+const endWord = "BEER";
 let currentGuess = "";
 let guessRow = 0;
 let lastValidWord = startWord;
@@ -14,10 +14,10 @@ async function isValidWord(word) {
     if (wordCache[word] !== undefined) {
         return wordCache[word];  // Use cached result
     }
-
+    
     try {
         const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-
+        console.log("valid function called");
         if (response.status === 200) {
             wordCache[word] = true;
             return true;
@@ -173,40 +173,58 @@ function showCongratsPopup() {
 
 
 // Show popup when the game is won
+let isSubmitting = false;  // Prevent multiple submissions
+
 async function submitWord() {
+    if (isSubmitting) return;  // Block if already processing
+
     if (currentGuess.length !== 4) {
-      //  showPopup("Enter a 4-letter word");
         return;
     }
-    
-    isValidWord(currentGuess.toLowerCase()).then(valid => {
-        if (!valid) {
-            showPopup("Not a valid word");
-            return;
-        }
 
-        if (!isOneLetterDifferent(currentGuess, lastValidWord)) {
-            showPopup("Change only one letter!");
-            return;
-        }
+    isSubmitting = true;  // Block further calls
 
-        guessHistory.push(currentGuess);  // Save the guess
+    const cleanedGuess = currentGuess.trim().toUpperCase();
 
+    console.log("Checking word:", cleanedGuess," ", lastValidWord);
 
-        highlightCorrectLetters(currentGuess);
-        highlightChangedLetters(currentGuess, lastValidWord);
+    const valid = await isValidWord(cleanedGuess);
 
-        if (currentGuess === endWord) {
-            highlightFinalRow();
-            showCongratsPopup();  // Show the custom popup
-        } else {
-            lastValidWord = currentGuess;
-            guessRow++;
-            currentGuess = "";
-            addNewGuessRow();
-        }
-    });
+    console.log("after valid word function");
+
+    console.log("outside the if : Guessed word :", cleanedGuess," last valid word :", lastValidWord);
+
+    if (!valid) {
+        showPopup("Not a valid word");
+        isSubmitting = false;
+        return;
+    }
+
+    if (!isOneLetterDifferent(cleanedGuess, lastValidWord.toUpperCase())) {
+
+        console.log("Guessed word :", cleanedGuess," last valid word :", lastValidWord);
+        showPopup("Change only one letter!");
+        isSubmitting = false;
+        return;
+    }
+
+    guessHistory.push(cleanedGuess);
+    highlightCorrectLetters(cleanedGuess);
+    highlightChangedLetters(cleanedGuess, lastValidWord);
+
+    if (cleanedGuess === endWord.toUpperCase()) {
+        highlightFinalRow();
+        showCongratsPopup();
+    } else {
+        lastValidWord = cleanedGuess;
+        guessRow++;
+        currentGuess = "";
+        addNewGuessRow();
+    }
+
+    isSubmitting = false;  // Allow next submission
 }
+
 
 // whatsapp progress message 
 function generateEmojiProgress() {
@@ -226,8 +244,6 @@ function generateEmojiProgress() {
     return progressGrid;
 }
 
-
-
 //Whatsapp Message
 function generateShareMessage() {
     const progress = generateEmojiProgress();
@@ -235,8 +251,6 @@ function generateShareMessage() {
     let shareMessage =   `Worder\n\n${startWord}\n${progress}${endWord}\n\nCan you beat my score? https://echoesofcode.github.io/Worder/`;
     return shareMessage;
 }
-
-
 
 function addNewGuessRow() {
     const guessGrid = document.getElementById('guess-grid');
@@ -253,11 +267,16 @@ function addNewGuessRow() {
 }
 
 function handleKeyPress(letter) {
-    if (currentGuess.length < 4) {
+    letter = letter.toUpperCase().trim();  // Convert to lowercase for consistency
+
+    if (/^[A-Z]$/.test(letter) && currentGuess.length < 4) {
         currentGuess += letter;
+        //console.log("handle key press ", letter, "  ", currentGuess);
         updateCurrentRow();
     }
 }
+
+
 
 function deleteLetter() {
     if (currentGuess.length > 0) {
@@ -274,6 +293,10 @@ function updateCurrentRow() {
 }
 
 function isOneLetterDifferent(word1, word2) {
+
+    word1 = word1.toUpperCase().trim();
+    word2 = word2.toUpperCase().trim();
+
     if (word1.length !== word2.length) {
         return false;  // Words must be the same length
     }
@@ -281,7 +304,7 @@ function isOneLetterDifferent(word1, word2) {
     let differenceCount = 0;
 
     for (let i = 0; i < word1.length; i++) {
-        if (word1[i].toLowerCase() !== word2[i].toLowerCase()) {
+        if (word1[i] !== word2[i]) {
             differenceCount++;
         }
         if (differenceCount > 1) {
@@ -322,14 +345,26 @@ function highlightFinalRow() {
 document.addEventListener('DOMContentLoaded', () => {
     initGame();
 
-    // On-screen keyboard functionality
+
     document.querySelectorAll('.key').forEach(button => {
-        button.addEventListener('click', () => handleKeyPress(button.textContent));
+        button.addEventListener('click', (event) => {
+            const letter = event.target.textContent.trim().toUpperCase();
+    
+            // Only input letters without triggering submission
+            if (/^[A-Z]$/.test(letter) && currentGuess.length < 4) {
+                handleKeyPress(letter);
+            }
+        });
     });
+    
 
     document.getElementById('enter-key').addEventListener('click', () => {
-        submitWord();
+        if (currentGuess.length === 4) {
+            console.log("Enter key clicked for submission");
+            submitWord();
+        }
     });
+    
 
     document.querySelector('[onclick="deleteLetter()"]')?.addEventListener('click', () => {
         deleteLetter();

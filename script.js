@@ -17,7 +17,6 @@ async function isValidWord(word) {
     
     try {
         const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-        console.log("valid function called");
         if (response.status === 200) {
             wordCache[word] = true;
             return true;
@@ -52,6 +51,7 @@ function initGame() {
 
     addNewGuessRow();
     createPopup();
+
 }
 
 function createPopup() {
@@ -186,13 +186,7 @@ async function submitWord() {
 
     const cleanedGuess = currentGuess.trim().toUpperCase();
 
-    console.log("Checking word:", cleanedGuess," ", lastValidWord);
-
     const valid = await isValidWord(cleanedGuess);
-
-    console.log("after valid word function");
-
-    console.log("outside the if : Guessed word :", cleanedGuess," last valid word :", lastValidWord);
 
     if (!valid) {
         showPopup("Not a valid word");
@@ -202,7 +196,6 @@ async function submitWord() {
 
     if (!isOneLetterDifferent(cleanedGuess, lastValidWord.toUpperCase())) {
 
-        console.log("Guessed word :", cleanedGuess," last valid word :", lastValidWord);
         showPopup("Change only one letter!");
         isSubmitting = false;
         return;
@@ -256,13 +249,23 @@ function addNewGuessRow() {
     const guessGrid = document.getElementById('guess-grid');
     const row = document.createElement('div');
     row.className = 'word-row';
+
     for (let i = 0; i < 4; i++) {
         const box = document.createElement('div');
         box.className = 'tile empty';
         box.setAttribute('id', `box-${guessRow}-${i}`);
         row.appendChild(box);
     }
+
     guessGrid.appendChild(row);
+
+    // Highlight the first tile of the new row
+    const firstTile = document.getElementById(`box-${guessRow}-0`);
+    if (firstTile) {
+        firstTile.classList.add('active-tile');
+    }
+
+
     row.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -271,7 +274,6 @@ function handleKeyPress(letter) {
 
     if (/^[A-Z]$/.test(letter) && currentGuess.length < 4) {
         currentGuess += letter;
-        //console.log("handle key press ", letter, "  ", currentGuess);
         updateCurrentRow();
     }
 }
@@ -375,7 +377,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('enter-key').addEventListener('click', () => {
         if (currentGuess.length === 4) {
-            console.log("Enter key clicked for submission");
             submitWord();
         }
     });

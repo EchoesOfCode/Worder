@@ -283,6 +283,7 @@ function handleKeyPress(letter) {
 function deleteLetter() {
     if (currentGuess.length > 0) {
         currentGuess = currentGuess.slice(0, -1);
+        console.log(" deleteletter function");
         updateCurrentRow();
     }
 }
@@ -362,7 +363,7 @@ function highlightFinalRow() {
 document.addEventListener('DOMContentLoaded', () => {
     initGame();
 
-
+    // On-screen keyboard functionality
     document.querySelectorAll('.key').forEach(button => {
         button.addEventListener('click', (event) => {
             const letter = event.target.textContent.trim().toUpperCase();
@@ -374,17 +375,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-
     document.getElementById('enter-key').addEventListener('click', () => {
         if (currentGuess.length === 4) {
             submitWord();
         }
     });
-    
 
-    document.querySelector('[onclick="deleteLetter()"]')?.addEventListener('click', () => {
-        deleteLetter();
-    });
+    // ✅ Add this for Backspace button (ON-SCREEN)
+    const backspaceButton = document.getElementById('backspace-key');
+    if (backspaceButton) {
+        backspaceButton.addEventListener('click', () => {
+            deleteLetter();
+        });
+    }
 
     // Physical keyboard functionality
     document.addEventListener('keydown', (event) => {

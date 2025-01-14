@@ -173,12 +173,12 @@ function showCongratsPopup() {
 
 
 // Show popup when the game is won
-function submitWord() {
+async function submitWord() {
     if (currentGuess.length !== 4) {
-        showPopup("Enter a 4-letter word");
+      //  showPopup("Enter a 4-letter word");
         return;
     }
-
+    
     isValidWord(currentGuess.toLowerCase()).then(valid => {
         if (!valid) {
             showPopup("Not a valid word");

@@ -286,6 +286,21 @@ function deleteLetter() {
 }
 
 function updateCurrentRow() {
+
+    // First, remove only the active border (not the highlight)
+    document.querySelectorAll(`#guess-grid .tile`).forEach(tile => {
+        tile.classList.remove('active-tile');
+    });
+
+    // Highlight the next empty tile for the next input
+    const activeTileIndex = currentGuess.length;
+    if (activeTileIndex < 4) {
+        const activeTile = document.getElementById(`box-${guessRow}-${activeTileIndex}`);
+        if (activeTile && !activeTile.classList.contains('correct-letter')) {
+            activeTile.classList.add('active-tile');  // Only apply if not correct
+        }
+    }
+
     for (let i = 0; i < 4; i++) {
         const box = document.getElementById(`box-${guessRow}-${i}`);
         box.textContent = currentGuess[i] || "";

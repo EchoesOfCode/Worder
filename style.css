@@ -3,6 +3,7 @@
 
 body {
     font-family: Arial, sans-serif;
+    
     background-color: #ffffff;
     text-align: center;
     margin: 0;
@@ -36,8 +37,8 @@ body {
     padding: 10px;
     position: relative;
     box-sizing: border-box;
-    font-size: 7vw;  
-    max-height: 10vh; 
+    font-size: clamp(18px, 6vw, 32px); 
+    min-height: 30px; 
     
 }
 
@@ -47,7 +48,7 @@ body {
     white-space: nowrap;
     align-items: center;
     text-overflow: ellipsis;
-
+    flex-grow: 1;
 }
 
 
@@ -380,6 +381,19 @@ h1 {
 
 /* Small Phones (320px - 375px) */
 @media (max-width: 375px) {
+
+    .reset-icon {
+        width: 30px;
+        height: 30px;
+    }    
+
+    .reset-icon::before {
+        
+        top: -5px;
+        left: 11px;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+    }
 
     #guess-grid{
         max-height: 30vh;

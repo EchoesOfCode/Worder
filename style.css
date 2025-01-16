@@ -440,7 +440,6 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     border: 2px dashed red;
     background-color: white;
-    font-family: 'Cursed Timer ULiL', sans-serif;
     border-radius: 50%;
 }
 
@@ -456,7 +455,6 @@ body {
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     border: 2px solid green; 
-    font-family: 'Cursed Timer ULiL', sans-serif;
     border-radius: 50%;
 
 }

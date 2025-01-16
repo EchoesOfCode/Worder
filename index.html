@@ -5,14 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>Worder</title>
+    <title>Worder - daily word ladder game</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Import Cursed Timer ULiL Font -->
+    <link href="https://fonts.cdnfonts.com/css/cursed-timer-ulil" rel="stylesheet">
+
 </head>
 <body>
     <div class="game-container">
         <div class ="gameHeader">
-            <div class ="gameHeaderLeftGroup"></div>
-            <div class ="gameHeaderTitle">Worder</div>
+            <div class ="gameHeaderLeftGroup">
+                
+            </div>
+            <div class ="gameHeaderTitle">W O R D E R</div>
             <div class ="gameHeaderRightGroup">
                 <button id="reset-button" title="Reset Game">
                     <div class="reset-icon"></div>
@@ -22,10 +27,13 @@
         </div>
         <div class = "game">
             <div id="grid-container">
-                <div class="word-row" id="start-word"></div>
+                <div id="start-row-wrapper">
+                    <div id="best-guess-counter">5</div>
+                    <div class="word-row" id="start-word"></div>
+                    <div id="guess-counter">0</div>
+                </div>
                 <div id="guess-grid"></div>
                 <div class="word-row" id="end-word"></div>
-               
             </div>
             <div class="keyboard">
                 <div class="key-row">

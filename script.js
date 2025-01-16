@@ -8,14 +8,13 @@ let lastValidWord = startWord;
 let guessHistory = [];  // Store all valid guesses
 const wordCache = {};
 let popupTimeout;
+let isSubmitting = false;  // Prevent multiple submissions
 
 
 async function isValidWord(word) {
     if (wordCache[word] !== undefined) {
         return wordCache[word];  // Use cached result
-    }
-    
-    try {
+    } try {
         const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
         if (response.status === 200) {
             wordCache[word] = true;
@@ -30,10 +29,50 @@ async function isValidWord(word) {
     }
 }
 
-
+/*
 function initGame() {
+
     const startRow = document.getElementById('start-word');
     const endRow = document.getElementById('end-word');
+
+    for (let char of startWord) {
+        const box = document.createElement('div');
+        box.className = 'tile filled';
+        box.textContent = char;
+        startRow.appendChild(box);
+    }
+    // ✅ Add the guess counter circle
+    if (!document.getElementById('guess-counter')) {
+
+        const guessCounter = document.createElement('div');
+        guessCounter.id = 'guess-counter';
+        guessCounter.textContent = '0';  // Initial guess count
+        document.getElementById('grid-container').appendChild(guessCounter);
+
+    }
+
+    for (let char of endWord) {
+        const box = document.createElement('div');
+        box.className = 'tile filled';
+        box.textContent = char;
+        endRow.appendChild(box);
+    }
+
+    addNewGuessRow();
+    createPopup();
+
+}
+
+*/
+
+
+
+function initGame() {
+
+    const startRow = document.getElementById('start-word');
+    startRow.innerHTML = "";
+    const endRow = document.getElementById('end-word');
+    endRow.innerHTML = "";
 
     for (let char of startWord) {
         const box = document.createElement('div');
@@ -49,10 +88,16 @@ function initGame() {
         endRow.appendChild(box);
     }
 
+    // Reset the guess counter to 0
+    const guessCounter = document.getElementById('guess-counter');
+    guessCounter.textContent = '0';
+
     addNewGuessRow();
     createPopup();
-
 }
+
+
+
 
 function createPopup() {
         const popup = document.createElement('div');
@@ -63,8 +108,7 @@ function createPopup() {
 
 
 function showPopup(message) {
-
-    
+  
     const currentRow = document.querySelector(`#guess-grid .word-row:nth-child(${guessRow + 1})`);
     const popup = document.getElementById('popup-message');
 
@@ -127,6 +171,12 @@ function resetGame() {
         tile.textContent = "";
     });
 
+    // ✅ Reset the guess counter to 0
+    const guessCounter = document.getElementById('guess-counter');
+    if (guessCounter) {
+        guessCounter.textContent = '0';
+    }
+
     initGame();
 }
 
@@ -143,8 +193,8 @@ document.getElementById('reset-button').addEventListener('click', (event) => {
 
 
 //congratulations PopUp
-
 function showCongratsPopup() {
+
     const popup = document.getElementById('congrats-popup');
     popup.style.display = 'flex';
 
@@ -173,8 +223,6 @@ function showCongratsPopup() {
 
 
 // Show popup when the game is won
-let isSubmitting = false;  // Prevent multiple submissions
-
 async function submitWord() {
     if (isSubmitting) return;  // Block if already processing
 
@@ -189,7 +237,7 @@ async function submitWord() {
     const valid = await isValidWord(cleanedGuess);
 
     if (!valid) {
-        showPopup("Not a valid word");
+        showPopup("Not a word");
         isSubmitting = false;
         return;
     }
@@ -201,9 +249,15 @@ async function submitWord() {
         return;
     }
 
+    
     guessHistory.push(cleanedGuess);
     highlightCorrectLetters(cleanedGuess);
     highlightChangedLetters(cleanedGuess, lastValidWord);
+
+    // ✅ Update the guess counter
+    const guessCounter = document.getElementById('guess-counter');
+    guessCounter.textContent = guessHistory.length;
+
 
     if (cleanedGuess === endWord.toUpperCase()) {
         highlightFinalRow();
@@ -361,17 +415,18 @@ function highlightFinalRow() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    
     initGame();
 
     // On-screen keyboard functionality
     document.querySelectorAll('.key').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const letter = event.target.textContent.trim().toUpperCase();
+    button.addEventListener('click', (event) => {
+    const letter = event.target.textContent.trim().toUpperCase();
     
-            // Only input letters without triggering submission
-            if (/^[A-Z]$/.test(letter) && currentGuess.length < 4) {
-                handleKeyPress(letter);
-            }
+    // Only input letters without triggering submission
+        if (/^[A-Z]$/.test(letter) && currentGuess.length < 4) {
+            handleKeyPress(letter);
+        }
         });
     });
     

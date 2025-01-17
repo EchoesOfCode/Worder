@@ -1,14 +1,15 @@
 /* script.js */
 
-const startWord = "MOON";
-const endWord = "BEAM";
+const startWord = "GRIM";
+const endWord = "DARK";
 let currentGuess = "";
 let guessRow = 0;
 let lastValidWord = startWord;
 let guessHistory = [];  // Store all valid guesses
 const wordCache = {};
 let popupTimeout;
-let isSubmitting = false;  // Prevent multiple submissions
+let isSubmitting = false;
+let gameOver = false;    // Prevent multiple submissions
 
 
 async function isValidWord(word) {
@@ -149,6 +150,7 @@ function resetGame() {
     guessRow = 0;
     lastValidWord = startWord;
     guessHistory = [];  
+    gameOver = false;  
 
     const guessGrid = document.getElementById('guess-grid');
     if (guessGrid) {
@@ -225,6 +227,8 @@ function showCongratsPopup() {
 // Show popup when the game is won
 async function submitWord() {
     if (isSubmitting) return;  // Block if already processing
+    if (gameOver) { return;  // Prevent further input if the game is over
+    }
 
     if (currentGuess.length !== 4) {
         return;
@@ -262,6 +266,7 @@ async function submitWord() {
     if (cleanedGuess === endWord.toUpperCase()) {
         highlightFinalRow();
         showCongratsPopup();
+        gameOver = true;  
     } else {
         lastValidWord = cleanedGuess;
         guessRow++;
@@ -446,6 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Physical keyboard functionality
     document.addEventListener('keydown', (event) => {
+        if (gameOver) return;  
         const key = event.key.toUpperCase();
         if (/^[A-Z]$/.test(key)) {
             handleKeyPress(key);

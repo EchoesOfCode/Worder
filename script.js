@@ -30,43 +30,6 @@ async function isValidWord(word) {
     }
 }
 
-/*
-function initGame() {
-
-    const startRow = document.getElementById('start-word');
-    const endRow = document.getElementById('end-word');
-
-    for (let char of startWord) {
-        const box = document.createElement('div');
-        box.className = 'tile filled';
-        box.textContent = char;
-        startRow.appendChild(box);
-    }
-    // ✅ Add the guess counter circle
-    if (!document.getElementById('guess-counter')) {
-
-        const guessCounter = document.createElement('div');
-        guessCounter.id = 'guess-counter';
-        guessCounter.textContent = '0';  // Initial guess count
-        document.getElementById('grid-container').appendChild(guessCounter);
-
-    }
-
-    for (let char of endWord) {
-        const box = document.createElement('div');
-        box.className = 'tile filled';
-        box.textContent = char;
-        endRow.appendChild(box);
-    }
-
-    addNewGuessRow();
-    createPopup();
-
-}
-
-*/
-
-
 
 function initGame() {
 
@@ -461,4 +424,25 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteLetter();
         }
     });
+});
+
+
+// Show the "How to Play" Modal
+document.getElementById('how-to-play-btn').addEventListener('click', () => {
+    const modal = document.getElementById('how-to-play-modal');
+    modal.style.display = 'flex'; // Show modal
+});
+
+
+// Close the Modal
+document.getElementById('close-modal-btn').addEventListener('click', () => {
+    document.getElementById('how-to-play-modal').style.display = 'none';
+});
+
+// Close Modal when clicking outside of it
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('how-to-play-modal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
 });

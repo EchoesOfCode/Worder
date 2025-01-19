@@ -15,7 +15,7 @@
     <div class="game-container">
         <div class ="gameHeader">
             <div class ="gameHeaderLeftGroup">
-                
+                <button id="how-to-play-btn" title="How to Play">❓</button>
             </div>
             <div class ="gameHeaderTitle">W O R D E R</div>
             <div class ="gameHeaderRightGroup">
@@ -28,7 +28,7 @@
         <div class = "game">
             <div id="grid-container">
                 <div id="start-row-wrapper">
-                    <div id="best-guess-counter">4</div>
+                    <div id="best-guess-counter"></div>
                     <div class="word-row" id="start-word"></div>
                     <div id="guess-counter">0</div>
                 </div>
@@ -81,8 +81,64 @@
                     <button id="whatsapp-share-btn">Share on WhatsApp</button>
                     <button id="play-again-btn">Play Again</button>
                 </div>
-            </div>            
-        </div>
+            </div>  
+            <!-- How to Play Modal -->
+            <div id="how-to-play-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modalHeaderRow">
+                        <div class="dummyLeftItem"></div>
+                        <div class="modalTitle">How To Play</div>
+                        <span id="close-modal-btn" class="close-btn">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div id="howToPlayModalBody">
+                           <!-- <div class="howToPlayHistorySection">This game is called a "word ladder" and was invented by Lewis Carroll in 1877.</div>-->
+                            <div class="howToPlayBodySectionHeader">Rules</div>
+                            <div class="howToPlaySentenceBlock">Make your way from the start word to the end word.</div>
+                            <div class="howToPlaySentenceBlock">Each word you enter <strong>can only change 1 letter</strong> from the word above it.</div>
+                            <div id="howToPlayExampleSection">
+                                <div class="howToPlayBodySectionHeader">Example</div> 
+                                    <div class="howToPlayExampleGameRow">
+                                        <div class="howToPlayExampleTile tile filled">E</div>
+                                        <div class="howToPlayExampleTile tile filled">A</div>
+                                        <div class="howToPlayExampleTile tile filled">S</div>
+                                        <div class="howToPlayExampleTile tile filled">T</div>
+                                    </div>
+                                    <div class="howToPlayExampleSentence"><strong>EAST</strong> start word, <strong>WEST</strong> end word</div>
+                                    <div class="howToPlayExampleGameRow">
+                                        <div class="howToPlayExampleTile tile changed-letter">V</div>
+                                        <div class="howToPlayExampleTile tile empty">A</div>
+                                        <div class="howToPlayExampleTile tile correct-letter">S</div>
+                                        <div class="howToPlayExampleTile tile correct-letter">T</div>
+                                    </div>
+                                    <div class="howToPlayExampleSentence">We changed <strong>E</strong> to <strong>V</strong> to make <strong>VAST</strong></div>
+                                    <div class="howToPlayExampleGameRow">
+                                        <div class="howToPlayExampleTile tile empty">V</div>
+                                        <div class="howToPlayExampleTile tile correct-letter tile changed-letter">E</div>
+                                        <div class="howToPlayExampleTile tile correct-letter">S</div>
+                                        <div class="howToPlayExampleTile tile correct-letter">T</div>
+                                    </div>
+                                    <div class="howToPlayExampleSentence">We changed <strong>A</strong> to <strong>E</strong> to make <strong>VEST</strong></div>
+                                    <div class="howToPlayExampleGameRow">
+                                        <div class="howToPlayExampleTile tile correct-letter tile changed-letter">W</div>
+                                        <div class="howToPlayExampleTile tile correct-letter">E</div>
+                                        <div class="howToPlayExampleTile tile correct-letter">S</div>
+                                        <div class="howToPlayExampleTile tile correct-letter">T</div>
+                                    </div>
+                                    <div class="howToPlayExampleSentence">We changed <strong>V</strong> to <strong>W</strong> to make <strong>WEST</strong></div>
+                                    <div class="howToPlayExampleGameRow">
+                                        <div class="howToPlayExampleTile tile filled">W</div>
+                                        <div class="howToPlayExampleTile tile filled">E</div>
+                                        <div class="howToPlayExampleTile tile filled">S</div>
+                                        <div class="howToPlayExampleTile tile filled">T</div>
+                                    </div> 
+                            </div>
+                            <div class="howToPlaySentenceBlock">And so on... until you reach the end word!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
     </div>
     <script src="script.js"></script>
 </body>

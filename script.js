@@ -1,7 +1,7 @@
 /* script.js */
 
-const startWord = "THAW";
-const endWord = "MELT";
+const startWord = "WORK";
+const endWord = "FLOW";
 let currentGuess = "";
 let guessRow = 0;
 let lastValidWord = startWord;

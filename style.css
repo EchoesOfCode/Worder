@@ -91,7 +91,7 @@ body {
 }
 
 .gameHeaderLeftGroup {
-    left: 10px;
+    left: 20px;
 }
 
 .gameHeaderRightGroup {
@@ -463,16 +463,35 @@ body {
 
 /* ❓ How to Play Button */
 #how-to-play-btn {
-    background-color: transparent;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 5px;
-    transition: transform 0.2s ease;
+    width: 30px;
+    height: 30px;
+    border: 3px solid black; /* Circle border */
+    border-radius: 50%; /* Makes it a circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; /* Make it clickable */
+    transition: transform 0.2s ease; 
+    margin: 5px;
 }
 
 #how-to-play-btn:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
+}
+
+/* Question Mark Inside the Circle */
+#how-to-play-btn::before {
+    content: "?"; /* Add the question mark */
+    font-size: 20px; /* Adjust font size */
+    font-weight: bold; /* Make it bold */
+    color: black; /* Question mark color */
+}
+
+.overlayContent{
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
 }
 
 /* 🔲 Modal Overlay */
